@@ -1,0 +1,88 @@
+/* Linked Jazz — component stylesheet. Values come from tokens.css (loaded first); this file only composes them. */
+
+body { margin: 0; background: var(--surface); color: var(--ink); font-family: var(--font-sans); font-size: 15px; line-height: 22px; -webkit-font-smoothing: antialiased; }
+.lj-row { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; padding: var(--space-4); }
+.lj-stack { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); }
+
+/* Links in running text */
+.lj-link { color: var(--blue-deep); text-decoration: none; }
+.lj-link:hover { text-decoration: underline; }
+.lj-link:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+
+/* Button */
+.lj-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); height: 40px; padding: 0 var(--space-4); margin: 0;
+  font-family: var(--font-sans); font-size: 15px; font-weight: 500; line-height: 1; letter-spacing: 0; white-space: nowrap;
+  color: var(--ink); background: var(--surface-raised); border: 1px solid var(--line-strong); border-radius: var(--radius-md);
+  cursor: pointer; text-decoration: none; transition: background-color 120ms, filter 120ms; }
+.lj-btn:hover { background: var(--surface); }
+.lj-btn-primary { color: var(--on-blue); background: var(--blue-deep); border-color: var(--blue-deep); }
+.lj-btn-primary:hover { background: var(--blue-deep); filter: brightness(0.92); }
+.lj-btn-sm { height: 32px; padding: 0 var(--space-3); font-size: 13px; }
+.lj-btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.lj-btn[disabled], .lj-btn[aria-disabled="true"] { color: var(--ink-muted); opacity: 0.5; cursor: default; pointer-events: none; }
+.lj-btn svg { width: 18px; height: 18px; flex: none; }
+
+/* SearchField */
+.lj-search { position: relative; display: flex; align-items: center; height: 44px; margin: 0; width: 100%; max-width: 560px;
+  background: var(--surface-raised); border: 1px solid var(--line-strong); border-radius: var(--radius-md); transition: border-color 120ms; }
+.lj-search:focus-within { border-color: var(--blue); box-shadow: var(--focus-ring); }
+.lj-search > svg { width: 20px; height: 20px; margin-left: var(--space-3); color: var(--ink-muted); flex: none; }
+.lj-search input { flex: 1; min-width: 0; height: 100%; padding: 0 var(--space-3); border: 0; background: transparent; font: inherit; font-size: 15px; color: var(--ink); }
+.lj-search input::placeholder { color: var(--ink-muted); opacity: 1; }
+.lj-search input:focus { outline: none; }
+.lj-search-menu { position: absolute; z-index: 10; top: calc(100% + var(--space-1)); left: -1px; right: -1px; margin: 0; padding: var(--space-1) 0; list-style: none;
+  background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-float); }
+.lj-search-menu li { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); padding: var(--space-2) var(--space-3); cursor: pointer; }
+.lj-search-menu li span:last-child { font-size: 13px; line-height: 18px; color: var(--ink-muted); white-space: nowrap; }
+.lj-search-menu li:hover, .lj-search-menu li[aria-selected="true"] { background: var(--blue-soft); color: var(--blue-deep); }
+.lj-search-menu li:hover span, .lj-search-menu li[aria-selected="true"] span { color: var(--blue-deep); }
+
+/* PersonCard */
+.lj-person { display: flex; gap: var(--space-4); padding: var(--space-4); color: inherit; text-decoration: none;
+  background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-md); }
+.lj-person:hover .lj-person-name { color: var(--blue-deep); text-decoration: underline; text-underline-offset: 3px; }
+.lj-person:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.lj-avatar { display: flex; align-items: center; justify-content: center; flex: none; width: 56px; height: 56px; overflow: hidden;
+  border-radius: var(--radius-full); background: var(--blue-soft); color: var(--blue-deep); font-weight: 700; font-size: 18px; letter-spacing: 0.02em; }
+.lj-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.lj-person-body { flex: 1; min-width: 0; }
+.lj-person-name { margin: 0; font-size: 17px; line-height: 24px; font-weight: 600; }
+.lj-person-meta { margin: 2px 0 0; font-size: 13px; line-height: 18px; color: var(--ink-muted); }
+.lj-person-counts { display: flex; gap: var(--space-4); margin: var(--space-2) 0 0; font-size: 13px; line-height: 18px; color: var(--ink-muted); }
+.lj-person-counts b { font-weight: 600; color: var(--ink); }
+
+/* RelationshipTag */
+.lj-rel { display: inline-flex; align-items: center; gap: var(--space-1); height: 24px; padding: 0 var(--space-2); margin: 0;
+  font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
+  color: var(--ink-muted); background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-sm);
+  text-decoration: none; cursor: pointer; transition: border-color 120ms, color 120ms; }
+.lj-rel:hover { color: var(--ink); border-color: var(--line-strong); }
+.lj-rel[aria-pressed="true"], .lj-rel[aria-current="true"] { color: var(--blue-deep); background: var(--blue-soft); border-color: var(--blue-soft); }
+.lj-rel:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.lj-rel span { font-weight: 400; letter-spacing: 0; }
+.lj-rel-line { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); font-size: 15px; line-height: 22px; }
+
+/* Transcript */
+.lj-transcript { margin: 0; padding: var(--space-6); max-width: 640px; background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-md); }
+.lj-transcript-speaker { display: block; margin: 0 0 var(--space-3); font-family: var(--font-sans); font-style: normal; font-size: 17px; line-height: 24px; font-weight: 600; color: var(--ink); }
+.lj-transcript p { margin: 0; font-family: var(--font-serif); font-size: 20px; line-height: 32px; font-weight: 400; color: var(--ink); }
+.lj-transcript p + p { margin-top: var(--space-4); }
+.lj-mention { color: var(--blue-deep); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--blue); }
+.lj-mention:hover { text-decoration-thickness: 2px; }
+.lj-transcript footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin-top: var(--space-4); padding-top: var(--space-3);
+  border-top: 1px solid var(--line); font-family: var(--font-sans); font-size: 13px; line-height: 18px; color: var(--ink-muted); }
+.lj-transcript footer a { color: var(--blue-deep); text-decoration: none; }
+.lj-transcript footer a:hover { text-decoration: underline; }
+.lj-transcript footer a:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+
+/* SiteHeader */
+.lj-header { display: flex; align-items: center; gap: var(--space-8); height: 72px; padding: 0 var(--space-8); background: var(--surface); border-bottom: 1px solid var(--line); }
+.lj-brand { display: flex; align-items: center; gap: var(--space-3); color: var(--ink); text-decoration: none; font-size: 20px; line-height: 24px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+.lj-brand img { display: block; width: 40px; height: 41px; }
+.lj-brand:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+.lj-nav { display: flex; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+.lj-nav a { display: block; padding: var(--space-2) var(--space-3); color: var(--ink); text-decoration: none; font-size: 15px; line-height: 22px; font-weight: 500; border-radius: var(--radius-md); }
+.lj-nav a:hover { color: var(--blue-deep); }
+.lj-nav a[aria-current="page"] { color: var(--blue-deep); background: var(--blue-soft); }
+.lj-nav a:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.lj-header .lj-search { margin-left: auto; width: 320px; height: 40px; }

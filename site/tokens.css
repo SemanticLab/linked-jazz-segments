@@ -1,0 +1,95 @@
+/* Linked Jazz — design tokens, transcribed from the design system's tokens.json.
+   Light is the primary theme; dark applies with data-theme="dark" on <html>, or by
+   system preference unless data-theme="light" pins it. */
+
+:root {
+  color-scheme: light;
+
+  /* grounds and lines */
+  --surface: #f8f7f4;
+  --surface-raised: #ffffff;
+  --line: #dcd8d0;
+  --line-strong: #8c877d;
+
+  /* text */
+  --ink: #23221f;
+  --ink-muted: #625d55;
+
+  /* the one hue */
+  --blue: #4a8ecb;
+  --blue-deep: #2a6ba6;
+  --blue-soft: #e4eef8;
+  --on-blue: #ffffff;
+  --danger: #b3261e;
+
+  /* the logo's discs — graph nodes and the logo only */
+  --node-lime: #afd246;
+  --node-yellow: #ffc549;
+  --node-gold: #ffd03a;
+  --node-green: #81c34a;
+  --node-sage: #78a172;
+  --node-periwinkle: #9a95c9;
+  --node-magenta: #ef5d9a;
+  --node-blush: #efcae0;
+  --node-peach: #e69775;
+  --node-orange: #f37442;
+  --node-red: #ef3b30;
+
+  /* type */
+  --font-sans: "Libre Franklin", "Franklin Gothic Medium", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* spacing: a 4px base, named by the multiple */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* radii */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-full: 9999px;
+
+  /* elevation and focus */
+  --shadow-float: 0 2px 6px #23221f14, 0 12px 28px -4px #23221f29;
+  --focus-ring: 0 0 0 2px #f8f7f4, 0 0 0 4px #4a8ecb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface: #1b1a18;
+    --surface-raised: #242320;
+    --line: #3a3833;
+    --line-strong: #7a756c;
+    --ink: #f2efe9;
+    --ink-muted: #aaa49a;
+    --blue-deep: #8dbbe6;
+    --blue-soft: #1f3448;
+    --on-blue: #1b1a18;
+    --danger: #f2756c;
+    --shadow-float: 0 2px 6px #00000066, 0 12px 28px -4px #000000b3;
+    --focus-ring: 0 0 0 2px #1b1a18, 0 0 0 4px #4a8ecb;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #1b1a18;
+  --surface-raised: #242320;
+  --line: #3a3833;
+  --line-strong: #7a756c;
+  --ink: #f2efe9;
+  --ink-muted: #aaa49a;
+  --blue-deep: #8dbbe6;
+  --blue-soft: #1f3448;
+  --on-blue: #1b1a18;
+  --danger: #f2756c;
+  --shadow-float: 0 2px 6px #00000066, 0 12px 28px -4px #000000b3;
+  --focus-ring: 0 0 0 2px #1b1a18, 0 0 0 4px #4a8ecb;
+}

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search the oral histories — Linked Jazz</title>
+<meta name="description" content="Search 61,357 passages of jazz oral-history interviews by meaning, narrowed by archive, period, place, venue, band and person.">
+<link rel="icon" href="assets/linked-jazz-mark.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="lj.css">
+<link rel="stylesheet" href="site.css">
+<script>
+  // apply a remembered theme before first paint; otherwise the system preference applies
+  try { var t = localStorage.getItem("lj-theme"); if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+</script>
+</head>
+<body>
+<header class="lj-header">
+  <a class="lj-brand" href="./"><img src="assets/linked-jazz-mark.png" alt="">Linked Jazz</a>
+  <nav aria-label="Main">
+    <ul class="lj-nav">
+      <li><a href="https://thisismattmiller.github.io/linked-jazz-2026-network/">People</a></li>
+      <li><a href="https://thisismattmiller.github.io/linked-jazz-2026-transcripts/">Oral histories</a></li>
+      <li><a href="./" aria-current="page">Search</a></li>
+      <li><a href="https://linkedjazz.org/">About</a></li>
+    </ul>
+  </nav>
+  <button class="lj-btn lj-btn-sm theme" type="button" id="theme" aria-pressed="false">Dark theme</button>
+</header>
+
+<main>
+<div class="col-wide">
+  <header class="page-head">
+    <p class="label">Linked Jazz</p>
+    <h1>Search the oral histories</h1>
+    <p class="lede">Describe what you want to read about, in your own words. Every passage of
+      <span id="n-segments">61,357</span> topic segments from <span id="n-docs">1,314</span> interviews is
+      matched by meaning, and the closest are reread and reordered by a model. Narrow by archive, by the years
+      a passage talks about, or by the places, venues, bands and people it names.</p>
+  </header>
+
+  <form class="searchbar" role="search" id="sform">
+    <div class="lj-search big">
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 3.75a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5Zm3.75 9 3.5 3.5"/></svg>
+      <input id="q" type="search" name="q" placeholder="What did they talk about?" aria-label="Search the passages"
+             autocomplete="off" spellcheck="false" maxlength="300">
+    </div>
+    <button class="lj-btn lj-btn-primary" type="submit" id="go">Search</button>
+  </form>
+
+  <div class="filters" role="group" aria-label="Archive" id="collections">
+    <button class="lj-rel" type="button" data-c="" aria-pressed="true">All archives</button>
+    <button class="lj-btn lj-btn-sm morefilters" type="button" id="morefilters" aria-expanded="false" aria-controls="panel">More filters</button>
+    <span class="count caption" id="count" aria-live="polite"></span>
+  </div>
+
+  <div class="active" id="active" hidden></div>
+  <p class="story-note caption" id="story-note" hidden></p>
+
+  <section class="panel" id="panel" hidden aria-label="More filters">
+    <div class="field">
+      <label class="label" for="f-category">Topic</label>
+      <select id="f-category"><option value="">Any topic</option></select>
+    </div>
+    <div class="field">
+      <span class="label" id="l-years">Years discussed</span>
+      <div class="range" role="group" aria-labelledby="l-years">
+        <input id="f-year_from" type="number" inputmode="numeric" min="1700" max="2079" placeholder="from" aria-label="Years discussed, from">
+        <span class="caption">to</span>
+        <input id="f-year_to" type="number" inputmode="numeric" min="1700" max="2079" placeholder="to" aria-label="Years discussed, to">
+      </div>
+    </div>
+    <div class="field">
+      <span class="label" id="l-iyears">Interview recorded</span>
+      <div class="range" role="group" aria-labelledby="l-iyears">
+        <input id="f-interview_year_from" type="number" inputmode="numeric" min="1948" max="2026" placeholder="from" aria-label="Interview recorded, from">
+        <span class="caption">to</span>
+        <input id="f-interview_year_to" type="number" inputmode="numeric" min="1948" max="2026" placeholder="to" aria-label="Interview recorded, to">
+      </div>
+      <p class="caption help">Rutgers and most Smithsonian interviews carry no date and drop out when this is set.</p>
+    </div>
+    <div class="field">
+      <label class="label" for="p-interviewee">Interviewee</label>
+      <div class="lj-search picker" data-kind="interviewee">
+        <input id="p-interviewee" type="text" placeholder="Name of the person interviewed" autocomplete="off" spellcheck="false" aria-autocomplete="list">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="p-person">Person mentioned</label>
+      <div class="lj-search picker" data-kind="people">
+        <input id="p-person" type="text" placeholder="Anyone named in the passage" autocomplete="off" spellcheck="false" aria-autocomplete="list">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="p-place">Place</label>
+      <div class="lj-search picker" data-kind="places">
+        <input id="p-place" type="text" placeholder="City, neighborhood, street, state" autocomplete="off" spellcheck="false" aria-autocomplete="list">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="p-venue">Venue</label>
+      <div class="lj-search picker" data-kind="venues">
+        <input id="p-venue" type="text" placeholder="Club, ballroom, theater, studio" autocomplete="off" spellcheck="false" aria-autocomplete="list">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="p-band">Band</label>
+      <div class="lj-search picker" data-kind="bands">
+        <input id="p-band" type="text" placeholder="Band or orchestra" autocomplete="off" spellcheck="false" aria-autocomplete="list">
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="f-theme">Story theme</label>
+      <select id="f-theme"><option value="">Any theme</option></select>
+    </div>
+    <div class="field">
+      <label class="label" for="f-community">Story community</label>
+      <select id="f-community"><option value="">Any community</option></select>
+    </div>
+    <div class="field">
+      <span class="label" id="l-order">Order</span>
+      <div class="choices" role="radiogroup" aria-labelledby="l-order">
+        <label><input type="radio" name="rerank" value="1" checked> Reread and reordered by the model</label>
+        <label><input type="radio" name="rerank" value="0"> By similarity only, about a second faster</label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label" for="f-k">Passages per search</label>
+      <select id="f-k"><option value="15">15</option><option value="30">30</option><option value="50">50</option></select>
+    </div>
+    <div class="panel-actions">
+      <button class="lj-btn lj-btn-sm" type="button" id="clear">Clear all filters</button>
+    </div>
+  </section>
+
+  <div class="similar-head" id="similar-head" hidden></div>
+  <p class="status" id="status" aria-live="polite"></p>
+  <div id="results"></div>
+  <div class="more" id="more" hidden></div>
+</div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
