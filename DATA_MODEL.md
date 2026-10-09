@@ -182,7 +182,7 @@ The filter actually applied is echoed back as `filter`.
       "people": ["Joe Watkins"], "qids": ["Q41798551"],
       "theme": 21, "community": 46, "story_core": 1,
       "snippet": "Richard B. 'Dick' Allen: Now, say on an average funeral, how would you … ",
-      "url": "https://thisismattmiller.github.io/linked-jazz-2026-transcripts/?t=alma9945593577206326#b1-92"
+      "url": "https://semlab.io/linked-jazz-transcripts/?t=alma9945593577206326#b1-92"
     }
   ]
 }
@@ -216,7 +216,7 @@ The filter actually applied is echoed back as `filter`.
 
 ## 5b. Full segment text: the segment JSON on the reader site
 
-`https://thisismattmiller.github.io/linked-jazz-2026-transcripts/data/seg/<segment_id>.json`
+`https://semlab.io/linked-jazz-transcripts/data/seg/<segment_id>.json`
 — one static file per segment (built by `build_transcripts.py` from the same
 DB; same origin as the reader, so a search UI hosted alongside it needs no
 CORS). It carries the full speaker-attributed text plus everything above:

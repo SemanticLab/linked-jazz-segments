@@ -9,7 +9,7 @@
 "use strict";
 
 const API = "https://vbl5pa2nmnl4ucnizt5l2oqsxi0octzh.lambda-url.us-east-1.on.aws/";
-const READER = "https://thisismattmiller.github.io/linked-jazz-2026-transcripts/";
+const READER = "https://semlab.io/linked-jazz-transcripts/";
 const NETWORK = "https://thisismattmiller.github.io/linked-jazz-2026-network/";
 const RELEVANT = 0.65;                       // cosine below this: nothing in the corpus really matches
 const LIST = ["place", "venue", "band", "person", "qid"];
