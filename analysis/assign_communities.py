@@ -9,6 +9,7 @@ Levels (data/clusters/centered/hdbscan-mcs{N}.jsonl):
   theme      mcs200   (~54)    broad narrative themes
   community  mcs50    (~118)   the story communities — the main unit
   fine       mcs15    (~214)   sub-threads
+  story      mcs10, min_samples 3 (~490)   the story map's level, attached to a community
 Each community is attached to the theme most of its core members fall in;
 each fine cluster to its community likewise.
 
@@ -34,7 +35,7 @@ ROOT = Path(__file__).resolve().parent.parent / "data"
 CL = ROOT / "clusters" / "centered"
 OUT = ROOT / "clusters"
 PACKS = OUT / "packs"; PACKS.mkdir(exist_ok=True)
-LEVELS = {"theme": 200, "community": 50, "fine": 15}
+LEVELS = {"theme": 200, "community": 50, "fine": 15, "story": 10}   # story: mcs 10, min_samples 3 (the map's level)
 K = 15
 
 meta = {}
@@ -76,6 +77,7 @@ def parent_map(child, parent):
     return {int(c): int(v.most_common(1)[0][0]) for c, v in m.items()}
 comm_theme = parent_map("community", "theme")
 fine_comm = parent_map("fine", "community")
+story_comm = parent_map("story", "community")
 
 with open(OUT / "segment_communities.jsonl", "w") as f:
     for i, k in enumerate(keys):
@@ -113,8 +115,8 @@ for lv in LEVELS:
                 "samples": samples}
         if lv == "community":
             pack["theme"] = comm_theme.get(c, -1)
-        if lv == "fine":
-            pack["community"] = fine_comm.get(c, -1)
+        if lv in ("fine", "story"):
+            pack["community"] = (fine_comm if lv == "fine" else story_comm).get(c, -1)
         json.dump(pack, open(PACKS / f"{lv}-{c}.json", "w"), indent=1, ensure_ascii=False)
 for t in range(labels["theme"].max() + 1):
     hier["themes"][t] = {"core_size": int((labels["theme"] == t).sum()),

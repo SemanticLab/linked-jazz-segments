@@ -150,7 +150,9 @@ which `ch-jazz-mashup/export_sqlite.py` loads into `story_clusters` /
 `segment_story_clusters` (keyed by doc_id + ord, so segment renumbering is safe).
 Result (2026-10-08): 54 themes, 118 communities, 214 fine clusters; 355 story,
 24 meta (interview openings, closing thanks, tape changes), 7 mixed; all mixed
-across the four archives, no interview-dominated cluster. Vector metadata carries
+across the four archives, no interview-dominated cluster. A fourth level, `story`
+(mcs 10, min_samples 3, 490 clusters, 32 of them dominated by one interview), was
+added for the story map — see that section. Vector metadata carries
 `theme`, `community`, `story_core`, so the Lambda can filter on them.
 
 ## Narrative arcs
@@ -244,6 +246,36 @@ clustering index (`similar=`), with a toggle to include the same interview.
 Rate-limit (429), backend (503) and "nothing matches this closely" (top score
 below 0.65) states have their own messages. Light and dark themes, down to
 360px wide.
+
+## The story map (`site/map.html`)
+
+A second page of the site: the stories laid out in a plane, each one an
+outline holding an icon per person who tells part of it (their portrait where
+Linked Jazz or Wikidata has one, otherwise initials; the icon grows with their
+number of passages). Hovering an icon shows the person, their archive and the first
+substantial thing they say in their most central passage there; clicking opens
+every passage they have in that community with reader links, and lists the other
+communities they appear in. Clicking a community's title opens its narrative,
+threads, facets and the list of who tells it. A find box jumps to a person or a
+story; `?c=<community>&p=<name>` are shareable links.
+
+| file | what |
+|---|---|
+| `analysis/build_map.py` | the layout (py3.12 uv script, ~30 s) at the `story` level by default (`--level community` for the 118): per-cluster centroids of the per-interview-centered clustering vectors → metric MDS → discs pushed apart; inside each community, PCA(2) of each person's mean UMAP-10 position among that community's people, collision-resolved. Writes `site/data/map.json` (0.8 MB: positions, names, narratives, people) and `site/data/map/c<id>.json` (18 MB in all, one per community, fetched on hover: every person's passages there with title, summary, period, quote, reader link). The quote is the teller's first substantial statement, never the interviewer's question: speaker labels vary by archive (`MR. HERMAN`, `Brown`, `Q`/`A`, `INTERVIEWER`, bare or surname-first names), so the teller's label is matched on any name token, else `A`, else the non-interviewer label with the most words |
+| `analysis/fetch_portraits.py` | the portrait atlas: `wd_people.semlab_thumb_url` (Linked Jazz's own square thumbnails) first, else the Wikidata P18 image via Commons `Special:FilePath?width=128`; originals cached in `data/portraits/`, atlas `site/assets/portraits.jpg` (64 px cells, 500 people) + `site/data/portraits.json` (qid → cell) |
+| `site/map.html`, `site/map.js`, `site/map.css` | the page: one canvas, d3-zoom (d3 7.9 from cdnjs), a quadtree for hit-testing, labels at screen size placed greedily so they never overlap |
+
+The map's unit is the **story level**: a fourth HDBSCAN level added 2026-10-17 because
+118 communities felt too few for 1,300 interviews — `cluster_hdbscan.py --levels 10
+--min-samples 3` on the cached UMAP (490 clusters, 47.5% noise; a sweep showed noise
+stays at 44–48% whatever the settings, `leaf` selection pushes it to 60%+), attached
+to a community by `assign_communities.py` (`story` key in `segment_communities.jsonl`,
+packs `story-*.json`), named by the same Sonnet brief (`names-story.json`: 277 story,
+183 mixed, 30 meta; 490 agents, 19M tokens, 5 min) and assembled into
+`story_clusters.json` as level `story` with `parent_level = community`. The map draws
+the 460 non-meta stories (18,894 icons) and labels the mixed ones "loose grouping".
+Only CORE members place a person in a story. Rerun `build_map.py` after any cluster
+change; `fetch_portraits.py` only when the people table changes (it skips what is cached).
 
 ## Deploy
 

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Story map — Linked Jazz</title>
+<meta name="description" content="The stories the jazz oral histories share, laid out as a map: each community of passages with the people who told it.">
+<link rel="icon" href="assets/linked-jazz-mark.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="lj.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="map.css">
+<script>
+  try { var th = localStorage.getItem("lj-theme"); if (th === "dark" || th === "light") document.documentElement.setAttribute("data-theme", th); } catch (e) {}
+</script>
+</head>
+<body class="map-page">
+<header class="lj-header">
+  <a class="lj-brand" href="./"><img src="assets/linked-jazz-mark.png" alt="">Linked Jazz</a>
+  <nav aria-label="Main">
+    <ul class="lj-nav">
+      <li><a href="https://thisismattmiller.github.io/linked-jazz-2026-network/">People</a></li>
+      <li><a href="https://semlab.io/linked-jazz-transcripts/">Oral histories</a></li>
+      <li><a href="./">Search</a></li>
+      <li><a href="map.html" aria-current="page">Story map</a></li>
+      <li><a href="https://linkedjazz.org/">About</a></li>
+    </ul>
+  </nav>
+  <button class="lj-btn lj-btn-sm theme" type="button" id="theme" aria-pressed="false">Dark theme</button>
+</header>
+
+<main class="map-main">
+  <div class="map-top">
+    <div class="map-intro">
+      <p class="label">Linked Jazz</p>
+      <h1>The stories they share</h1>
+      <p class="lede">Every passage of the oral histories was embedded and clustered; the <span id="n-comm">460</span> stories
+        that came out are laid out here by how alike they are. Inside each one sits everybody who told part of that
+        story. Hover a face for what they said, click for all of it.</p>
+    </div>
+    <form class="map-find" role="search" id="find" autocomplete="off">
+      <div class="lj-search picker">
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 3.75a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5Zm3.75 9 3.5 3.5"/></svg>
+        <input id="q" type="search" placeholder="Find a person or a story" aria-label="Find a person or a story on the map" spellcheck="false" aria-autocomplete="list">
+      </div>
+    </form>
+  </div>
+
+  <div class="map-stage" id="stage">
+    <canvas id="map" aria-label="Map of the story communities. Use the list below each community for a text version." role="img"></canvas>
+    <div class="map-tools" role="group" aria-label="Zoom">
+      <button class="lj-btn lj-btn-sm" type="button" id="zin" aria-label="Zoom in">+</button>
+      <button class="lj-btn lj-btn-sm" type="button" id="zout" aria-label="Zoom out">−</button>
+      <button class="lj-btn lj-btn-sm" type="button" id="zfit">Fit</button>
+    </div>
+    <p class="map-status caption" id="status" aria-live="polite">Loading the map…</p>
+    <div class="map-tip" id="tip" hidden role="status"></div>
+
+    <aside class="map-panel" id="panel" hidden aria-label="Details">
+      <button class="lj-btn lj-btn-sm close" type="button" id="close" aria-label="Close">×</button>
+      <div id="panel-body"></div>
+    </aside>
+  </div>
+
+  <p class="map-foot caption">The stories are HDBSCAN clusters of at least ten passages over the segment embeddings (interview openings,
+    tape changes and copyright pages left out; groups the naming model judged to have no single subject are marked as loose
+    groupings). A person appears in a story when at least one of their passages is a core member of it; the icon grows with
+    their number of passages there. Portraits come from Linked Jazz and Wikidata; everyone else is
+    their initials.</p>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="map.js"></script>
+</body>
+</html>

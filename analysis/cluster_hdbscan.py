@@ -7,6 +7,7 @@
 
   uv run analysis/cluster_hdbscan.py            # all levels
   uv run analysis/cluster_hdbscan.py --no-center  # ablation: raw vectors
+  uv run analysis/cluster_hdbscan.py --levels 10 --min-samples 3   # the "story" level (490 clusters)
 
 Per-interview mean-centering first (subtract each interview's mean vector,
 renormalize): raw vectors have 72% same-interview nearest neighbours, centered
@@ -29,6 +30,9 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent / "data"
 DIM, UMAP_DIMS, LEVELS = 1536, 10, [15, 50, 200]
 CENTER = "--no-center" not in sys.argv
+if "--levels" in sys.argv:                       # e.g. --levels 20  (reuses the cached UMAP)
+    LEVELS = [int(x) for x in sys.argv[sys.argv.index("--levels") + 1].split(",")]
+MIN_SAMPLES = int(sys.argv[sys.argv.index("--min-samples") + 1]) if "--min-samples" in sys.argv else 10
 out_dir = ROOT / "clusters" / ("centered" if CENTER else "raw")
 out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -72,7 +76,7 @@ else:
 
 import hdbscan
 for mcs in LEVELS:
-    cl = hdbscan.HDBSCAN(min_cluster_size=mcs, min_samples=10, core_dist_n_jobs=-1,
+    cl = hdbscan.HDBSCAN(min_cluster_size=mcs, min_samples=MIN_SAMPLES, core_dist_n_jobs=-1,
                          cluster_selection_method="eom")
     labels = cl.fit_predict(emb.astype(np.float64))
     probs, pers = cl.probabilities_, cl.cluster_persistence_
@@ -82,7 +86,7 @@ for mcs in LEVELS:
     with open(out_dir / f"hdbscan-mcs{mcs}.jsonl", "w") as f:
         for k, l, p in zip(keys, labels, probs):
             f.write(json.dumps({"docid": k, "cluster": int(l), "prob": round(float(p), 3)}) + "\n")
-    summary = {"min_cluster_size": mcs, "min_samples": 10, "centered": CENTER, "n_docs": len(keys),
+    summary = {"min_cluster_size": mcs, "min_samples": MIN_SAMPLES, "centered": CENTER, "n_docs": len(keys),
                "n_clusters": n, "noise_fraction": round(noise, 4), "clusters": []}
     order = np.argsort([-(labels == c).sum() for c in range(n)])
     for c in order:

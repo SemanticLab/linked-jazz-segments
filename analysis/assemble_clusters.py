@@ -18,7 +18,7 @@ names = {}
 for f in sys.argv[1:]:
     for r in json.load(open(f)):
         names[(r["level"], int(r["id"]))] = r
-PARENT = {"community": ("theme", "theme"), "fine": ("community", "community")}
+PARENT = {"community": ("theme", "theme"), "fine": ("community", "community"), "story": ("community", "community")}
 rows = []
 for p in sorted(OUT.glob("packs/*.json")):
     pk = json.load(open(p))
@@ -34,7 +34,7 @@ for p in sorted(OUT.glob("packs/*.json")):
         rec["parent_level"], field = PARENT[pk["level"]]
         rec["parent_id"] = pk.get(field)
     rows.append(rec)
-rows.sort(key=lambda r: (["theme", "community", "fine"].index(r["level"]), r["id"]))
+rows.sort(key=lambda r: (["theme", "community", "fine", "story"].index(r["level"]), r["id"]))
 json.dump(rows, open(OUT / "story_clusters.json", "w"), indent=1, ensure_ascii=False)
 by = Counter((r["level"], r["name"] is not None) for r in rows)
 kinds = Counter((r["level"], r["kind"]) for r in rows if r["kind"])
